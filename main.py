@@ -40,3 +40,21 @@ class hand:
     def __str__(self):
         return str(self.cards)
     
+class player: 
+    def __init__(self, name, hand):
+        self.name = name
+        self.hand = hand
+
+    players = []
+
+    def __str__(self):
+        return str(self.name)
+    
+class game:
+    def __init__(self, num_players):
+        self.num_players = num_players
+
+if __name__ == "__main__":
+    game(
+        num_players = input("Enter the number of players: ")
+    )

@@ -26,7 +26,15 @@ class hand:
         self.cards.append(card)
     
     def score(self) -> int:
-        sum(self.cards)
+        score = 0
+        for card in self.cards:
+            if card[0] == "Ace":
+                score += 11
+            elif card[0] in ["Jack", "Queen", "King"]:
+                score += 10
+            else:
+                score += int(card[0])
+        return score
 
     def __str__(self):
         return str(self.cards)
@@ -50,10 +58,16 @@ class game:
 
     def display_players(self):
         for player in self.players:
-            print(player)
-            print(player.hand)
+            print(player.name.title())
+            for card in player.hand.cards:
+                print(card[0] + " of " + card[1])
+            print(f"Current score: {player.hand.score()}")
+            print("--" * 5)
 
 if __name__ == "__main__":
-    game = game(num_players = int(input("Enter the number of players: ")))
-    
+    print("Welcome to Blackjack!")
+    game = game(num_players = int(input("How many people are playing? ")))
+
+    print("--" * 5)
+
     game.display_players()

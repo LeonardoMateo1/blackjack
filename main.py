@@ -75,37 +75,48 @@ class game:
             for card in player.hand.cards:
                 print(card[0] + " of " + card[1])
             print(f"Current score: {player.hand.score()}")
+            if player.hand.score() == 21:
+                print("Blackjack!")
             print("--" * 5)
 
     def play(self):
         d = deck()
-
+    
         for player in self.players:
-            print(player.name.title())
-            if player.hand.card_list[0][0] == player.hand.card_list[1][0]:
-                print("(Split, Hit, Stand)")
-            else:
-                print("(Hit, Stand)")
-            for card in player.hand.cards:
-                print(card[0] + " of " + card[1])
-            print(f"Current score: {player.hand.score()}")
-
+            
             while True:
-                if player.hand.score() == 21:
-                    print("Blackjack!")
+
+                print("--" * 5)
+                
+                print(player.name.title())
+                if player.hand.card_list[0][0] == player.hand.card_list[1][0]:
+                    print("(Split, Hit, Stand)")
+                else:
+                    print("(Hit, Stand)")
+                for card in player.hand.cards:
+                    print(card[0] + " of " + card[1])
+                print(f"Current score: {player.hand.score()}")
+
+                score = player.hand.score()
+
+                if score == 21 and len(player.hand.cards) == 2:
+                    print("Blackjack")
                     break
-                elif player.hand.score() > 21:
+                if score == 21:
+                    print("You got 21!")
+                    break
+                if score > 21:
                     print("Bust!")
                     break
-                else:
-                    self.play = input("What would you like to do? ")
 
-                    if self.play == "Hit":
-                        player.hand.add(d.draw(1))
-                        print(player.hand)
-                        print(f"New score: {player.hand.score()}")
-                    elif self.play == "Stand":
-                        break
+                player_action = input("What would you like to do? ")
+
+                if player_action == "Hit":
+                    player.hand.add(d.draw(1))
+                elif player_action == "Stand":
+                    break
+            
+
 
 
 if __name__ == "__main__":

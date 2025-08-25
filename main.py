@@ -70,7 +70,7 @@ class game:
             print(player.name.title())
             for card in player.hand.cards:
                 print(card[0] + " of " + card[1])
-            print(f"Current score: {player.hand.score()}")
+            print(f"Current hand: {player.hand.score()}")
             if player.hand.score() == 21:
                 print("Blackjack!")
             print("--" * 5)
@@ -103,7 +103,7 @@ class game:
                     print("(Hit, Stand)")
                 for card in player.hand.cards:
                     print(card[0] + " of " + card[1])
-                print(f"Current score: {player.hand.score()}")
+                print(f"Current hand: {player.hand.score()}")
 
                 player_action = input("What would you like to do? ").strip().lower()
 
@@ -114,15 +114,28 @@ class game:
     
     def dealer_turn(self):
         while self.dealer.hand.score() < 17:
+            d = deck()
             self.dealer.hand.add(d.draw(1))
 
+        print("--" * 5)
+        print("Dealer")
+        for card in self.dealer.hand.cards:
+            print(card[0] + " of " + card[1])
+        print(f"Dealers Hand: {self.dealer.hand.score()}")
+
+        for player in self.players:
+            if player.hand.score() > self.dealer.hand.score():
+                print(player.name.title() + " wins against the dealer!")
+            elif player.hand.score() == self.dealer.hand.score():
+                print(player.name.title() + " draw!")
+            else:
+                print(player.name.title() + " loses to the dealer!")
 
 
 if __name__ == "__main__":
     print("Welcome to Blackjack!")
     game = game(num_players = int(input("How many people are playing? ")))
-
     print("--" * 5)
-
     game.display_players()
     game.play()
+    game.dealer_turn()

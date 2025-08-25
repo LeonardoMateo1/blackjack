@@ -66,10 +66,6 @@ class game:
         self.players = [player(input(f"Enter player {i+1} name: "), hand(d.draw(2))) for i in range(self.num_players)]
 
     def display_players(self):
-        print("Dealer")
-        print(self.dealer.hand.card_list[0][0] + " of " + self.dealer.hand.card_list[0][1])
-        print("--" * 5)
-
         for player in self.players:
             print(player.name.title())
             for card in player.hand.cards:
@@ -78,13 +74,25 @@ class game:
             if player.hand.score() == 21:
                 print("Blackjack!")
             print("--" * 5)
+        
+        print("Dealer")
+        print(self.dealer.hand.card_list[0][0] + " of " + self.dealer.hand.card_list[0][1])
 
     def play(self):
         d = deck()
     
         for player in self.players:
-            
             while True:
+                score = player.hand.score()
+
+                if score == 21 and len(player.hand.cards) == 2:
+                    break
+                if score == 21:
+                    print("You got 21!")
+                    break
+                if score > 21:
+                    print("Bust!")
+                    break
 
                 print("--" * 5)
                 
@@ -97,25 +105,16 @@ class game:
                     print(card[0] + " of " + card[1])
                 print(f"Current score: {player.hand.score()}")
 
-                score = player.hand.score()
+                player_action = input("What would you like to do? ").strip().lower()
 
-                if score == 21 and len(player.hand.cards) == 2:
-                    print("Blackjack")
-                    break
-                if score == 21:
-                    print("You got 21!")
-                    break
-                if score > 21:
-                    print("Bust!")
-                    break
-
-                player_action = input("What would you like to do? ")
-
-                if player_action == "Hit":
+                if player_action == "hit":
                     player.hand.add(d.draw(1))
-                elif player_action == "Stand":
+                elif player_action == "stand":
                     break
-            
+    
+    def dealer_turn(self):
+        while self.dealer.hand.score() < 17:
+            self.dealer.hand.add(d.draw(1))
 
 
 
